@@ -4,10 +4,12 @@ import SwiftUI
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private var menuBarController: MenuBarController?
+    private var notchPlayerController: NotchPlayerController?
     private var cancellables = Set<AnyCancellable>()
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         setupMenuBar()
+        setupNotchPlayer()
         setupMusicService()
     }
 
@@ -24,6 +26,23 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func setupMenuBar() {
         menuBarController = MenuBarController()
+    }
+
+    private func setupNotchPlayer() {
+        // Only create notch player on Macs with a notch
+        if hasNotch() {
+            Task { @MainActor in
+                self.notchPlayerController = NotchPlayerController()
+            }
+        }
+    }
+
+    private func hasNotch() -> Bool {
+        guard let screen = NSScreen.main else { return false }
+        if #available(macOS 12.0, *) {
+            return screen.safeAreaInsets.top > 0
+        }
+        return false
     }
 
     private func setupMusicService() {

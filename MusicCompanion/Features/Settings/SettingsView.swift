@@ -62,9 +62,28 @@ struct GeneralSettingsView: View {
             Section("Notifications") {
                 Toggle("Show now playing notifications", isOn: .constant(true))
             }
+
+            Section("Notch Player") {
+                Toggle("Show notch player", isOn: $appState.showNotchPlayer)
+                    .disabled(!hasNotch)
+
+                if !hasNotch {
+                    Text("Notch player requires a Mac with a notch display")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            }
         }
         .formStyle(.grouped)
         .padding()
+    }
+
+    private var hasNotch: Bool {
+        guard let screen = NSScreen.main else { return false }
+        if #available(macOS 12.0, *) {
+            return screen.safeAreaInsets.top > 0
+        }
+        return false
     }
 }
 
