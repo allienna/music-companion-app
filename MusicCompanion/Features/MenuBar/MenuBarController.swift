@@ -86,7 +86,7 @@ final class MenuBarController: NSObject {
 
     private func setupPopover() {
         popover = NSPopover()
-        popover?.contentSize = NSSize(width: 320, height: 400)
+        popover?.contentSize = NSSize(width: 280, height: 360)
         popover?.behavior = .transient
         popover?.animates = true
         popover?.contentViewController = NSHostingController(rootView: MenuBarPopoverView())
@@ -186,18 +186,20 @@ final class MenuBarController: NSObject {
 
 // MARK: - Menu Bar Status Item View
 
-/// Custom view for the menu bar status item that supports marquee scrolling
+/// Custom view for the menu bar status item that supports marquee scrolling and theme changes
 final class MenuBarStatusItemView: NSView {
     private let iconView: NSImageView = {
         let imageView = NSImageView()
         imageView.image = NSImage(systemSymbolName: "music.note", accessibilityDescription: "Music Companion")
         imageView.contentTintColor = .labelColor
+        imageView.symbolConfiguration = .init(pointSize: 13, weight: .medium)
         return imageView
     }()
 
     private let marqueeView: MarqueeView
     private weak var target: AnyObject?
     private var action: Selector?
+    private var isHighlighted = false
 
     init(maxWidth: CGFloat, target: AnyObject?, action: Selector?) {
         self.marqueeView = MarqueeView.forMenuBar(maxWidth: maxWidth)
@@ -212,6 +214,8 @@ final class MenuBarStatusItemView: NSView {
     }
 
     private func setupViews() {
+        wantsLayer = true
+
         addSubview(iconView)
         addSubview(marqueeView)
 
@@ -219,16 +223,32 @@ final class MenuBarStatusItemView: NSView {
         marqueeView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            iconView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 4),
+            iconView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 6),
             iconView.centerYAnchor.constraint(equalTo: centerYAnchor),
             iconView.widthAnchor.constraint(equalToConstant: 16),
             iconView.heightAnchor.constraint(equalToConstant: 16),
 
-            marqueeView.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 4),
-            marqueeView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -4),
+            marqueeView.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 6),
+            marqueeView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -6),
             marqueeView.centerYAnchor.constraint(equalTo: centerYAnchor),
         ])
+
+        updateColors()
     }
+
+    // MARK: - Theme Support
+
+    override func viewDidChangeEffectiveAppearance() {
+        super.viewDidChangeEffectiveAppearance()
+        updateColors()
+    }
+
+    private func updateColors() {
+        // Icon color automatically adapts via .labelColor
+        iconView.contentTintColor = isHighlighted ? .selectedMenuItemTextColor : .labelColor
+    }
+
+    // MARK: - Content
 
     func updateContent(title: String?, artist: String?) {
         if let title, let artist {
@@ -247,8 +267,26 @@ final class MenuBarStatusItemView: NSView {
     // MARK: - Mouse Handling
 
     override func mouseDown(with event: NSEvent) {
+        isHighlighted = true
+        updateColors()
+
         if let target, let action {
             NSApp.sendAction(action, to: target, from: self)
         }
+
+        // Reset highlight after a short delay
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+            self?.isHighlighted = false
+            self?.updateColors()
+        }
+    }
+
+    override func mouseEntered(with event: NSEvent) {
+        // Could add hover effect here if desired
+    }
+
+    override func mouseExited(with event: NSEvent) {
+        isHighlighted = false
+        updateColors()
     }
 }

@@ -6,6 +6,7 @@ final class MenuBarViewModel: ObservableObject {
     @Published private(set) var currentTrack: Track?
     @Published private(set) var isPlaying: Bool = false
     @Published private(set) var playbackPosition: TimeInterval = 0
+    @Published private(set) var isLiked: Bool = false
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -60,6 +61,22 @@ final class MenuBarViewModel: ObservableObject {
     func previousTrack() {
         Task {
             try? await AppState.shared.musicServiceManager.previousTrack()
+        }
+    }
+
+    func seek(to progress: Double) {
+        guard let duration = currentTrack?.duration else { return }
+        let position = duration * progress
+        Task {
+            try? await AppState.shared.musicServiceManager.seek(to: position)
+        }
+    }
+
+    func toggleLike() {
+        Task {
+            try? await AppState.shared.musicServiceManager.toggleLike()
+            // Toggle local state optimistically
+            isLiked.toggle()
         }
     }
 
