@@ -7,9 +7,9 @@ struct NotchPlayerView: View {
     // Layout constants
     private let notchWidth: CGFloat = 200
     private let notchHeight: CGFloat = 32
-    private let expandedHeight: CGFloat = 180
-    private let expandedWidth: CGFloat = 420
-    private let cornerRadius: CGFloat = 24
+    private let expandedHeight: CGFloat = 170
+    private let expandedWidth: CGFloat = 380
+    private let cornerRadius: CGFloat = 20
 
     var body: some View {
         expandedView
@@ -45,28 +45,7 @@ struct NotchPlayerView: View {
     }
 
     private var leftPanel: some View {
-        HStack {
-            if let artworkData = viewModel.currentTrack?.artworkData,
-               let nsImage = NSImage(data: artworkData) {
-                Image(nsImage: nsImage)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 24, height: 24)
-                    .clipShape(RoundedRectangle(cornerRadius: 4))
-                    .padding(.leading, 16)
-            } else {
-                RoundedRectangle(cornerRadius: 4)
-                    .fill(Color.gray.opacity(0.3))
-                    .frame(width: 24, height: 24)
-                    .overlay {
-                        Image(systemName: "music.note")
-                            .font(.system(size: 10))
-                            .foregroundStyle(.white.opacity(0.5))
-                    }
-                    .padding(.leading, 16)
-            }
-            Spacer()
-        }
+        Color.clear
     }
 
     private var rightPanel: some View {
@@ -81,28 +60,62 @@ struct NotchPlayerView: View {
     }
 
     private var mainContentView: some View {
-        VStack(spacing: 12) {
-            // Track info
-            VStack(spacing: 4) {
-                Text(viewModel.currentTrack?.title ?? "Not Playing")
-                    .font(.system(size: 15, weight: .semibold))
-                    .foregroundStyle(.white)
-                    .lineLimit(1)
+        HStack(spacing: 16) {
+            // Large album artwork
+            largeArtwork
+                .padding(.leading, 20)
 
-                Text(viewModel.currentTrack?.artist ?? "—")
-                    .font(.system(size: 13))
-                    .foregroundStyle(.white.opacity(0.6))
-                    .lineLimit(1)
+            // Track info and controls
+            VStack(spacing: 8) {
+                // Track info
+                VStack(spacing: 2) {
+                    Text(viewModel.currentTrack?.title ?? "Not Playing")
+                        .font(.system(size: 15, weight: .semibold))
+                        .foregroundStyle(.white)
+                        .lineLimit(1)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+
+                    Text(viewModel.currentTrack?.artist ?? "—")
+                        .font(.system(size: 13))
+                        .foregroundStyle(.white.opacity(0.6))
+                        .lineLimit(1)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .padding(.top, 8)
+
+                Spacer()
+
+                // Progress bar
+                progressView
+
+                // Playback controls
+                controlsView
+                    .padding(.bottom, 12)
             }
-            .padding(.top, 16)
+            .padding(.trailing, 20)
+        }
+    }
 
-            // Progress bar
-            progressView
-                .padding(.horizontal, 24)
-
-            // Playback controls
-            controlsView
-                .padding(.bottom, 16)
+    private var largeArtwork: some View {
+        Group {
+            if let artworkData = viewModel.currentTrack?.artworkData,
+               let nsImage = NSImage(data: artworkData) {
+                Image(nsImage: nsImage)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 100, height: 100)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .shadow(color: .black.opacity(0.4), radius: 8, x: 0, y: 4)
+            } else {
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color.gray.opacity(0.3))
+                    .frame(width: 100, height: 100)
+                    .overlay {
+                        Image(systemName: "music.note")
+                            .font(.system(size: 32))
+                            .foregroundStyle(.white.opacity(0.4))
+                    }
+            }
         }
     }
 
