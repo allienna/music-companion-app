@@ -1,5 +1,8 @@
 import Combine
 import Foundation
+import os.log
+
+private let managerLogger = Logger(subsystem: "com.allienna.musiccompanion", category: "MusicServiceManager")
 
 @MainActor
 final class MusicServiceManager: ObservableObject {
@@ -30,15 +33,18 @@ final class MusicServiceManager: ObservableObject {
     private func setupServices() {
         // Register available music services
         services.append(AppleMusicService())
-        // TODO: Add SpotifyService when implemented
-        // services.append(SpotifyService())
+        services.append(SpotifyService())
     }
 
     func startMonitoring() async {
+        NSLog("[MusicServiceManager] Starting monitoring for %d services", services.count)
+        managerLogger.info("Starting monitoring for \(self.services.count) services")
         for service in services {
+            NSLog("[MusicServiceManager] Starting service: %@", "\(service.source)")
             await service.startMonitoring()
             subscribeToService(service)
         }
+        NSLog("[MusicServiceManager] All services started")
     }
 
     func stopMonitoring() async {
