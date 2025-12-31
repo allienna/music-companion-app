@@ -1,5 +1,6 @@
 import AppKit
 import Combine
+import QuartzCore
 import SwiftUI
 
 @MainActor
@@ -16,9 +17,9 @@ final class NotchPlayerController {
     private let notchWidth: CGFloat = 200
     private let notchHeight: CGFloat = 38
 
-    // Expanded player dimensions
-    private let expandedWidth: CGFloat = 420
-    private let expandedHeight: CGFloat = 180
+    // Expanded player dimensions (must match NotchPlayerView)
+    private let expandedWidth: CGFloat = 380
+    private let expandedHeight: CGFloat = 170
 
     init() {
         setupViewModel()
@@ -163,32 +164,62 @@ final class NotchPlayerController {
     // MARK: - Expansion
 
     private func expand() {
-        guard !isExpanded else { return }
+        guard !isExpanded, let playerWindow, let contentView = playerWindow.contentView else { return }
         isExpanded = true
 
         hideTimer?.invalidate()
         hideTimer = nil
 
-        playerWindow?.orderFront(nil)
+        // Set initial state: scaled down and positioned higher (at notch)
+        contentView.wantsLayer = true
+        contentView.layer?.anchorPoint = CGPoint(x: 0.5, y: 0)
+        contentView.layer?.position = CGPoint(x: contentView.bounds.midX, y: 0)
+        contentView.layer?.transform = CATransform3DMakeScale(0.5, 0.1, 1)
 
+        playerWindow.alphaValue = 0
+        playerWindow.orderFront(nil)
+
+        // Animate to full size
         NSAnimationContext.runAnimationGroup { context in
-            context.duration = 0.2
-            context.timingFunction = CAMediaTimingFunction(name: .easeOut)
-            playerWindow?.animator().alphaValue = 1
+            context.duration = 0.25
+            context.timingFunction = CAMediaTimingFunction(controlPoints: 0.16, 1, 0.3, 1) // spring-like
+
+            CATransaction.begin()
+            CATransaction.setAnimationDuration(0.25)
+            CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(controlPoints: 0.16, 1, 0.3, 1))
+
+            contentView.layer?.transform = CATransform3DIdentity
+            playerWindow.animator().alphaValue = 1
+
+            CATransaction.commit()
         }
     }
 
     private func collapse() {
-        guard isExpanded else { return }
+        guard isExpanded, let playerWindow, let contentView = playerWindow.contentView else { return }
         isExpanded = false
 
+        contentView.wantsLayer = true
+        contentView.layer?.anchorPoint = CGPoint(x: 0.5, y: 0)
+        contentView.layer?.position = CGPoint(x: contentView.bounds.midX, y: 0)
+
         NSAnimationContext.runAnimationGroup { context in
-            context.duration = 0.15
-            context.timingFunction = CAMediaTimingFunction(name: .easeIn)
-            playerWindow?.animator().alphaValue = 0
+            context.duration = 0.2
+            context.timingFunction = CAMediaTimingFunction(controlPoints: 0.4, 0, 1, 1) // ease-in
+
+            CATransaction.begin()
+            CATransaction.setAnimationDuration(0.2)
+            CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(controlPoints: 0.4, 0, 1, 1))
+
+            contentView.layer?.transform = CATransform3DMakeScale(0.5, 0.1, 1)
+            playerWindow.animator().alphaValue = 0
+
+            CATransaction.commit()
         } completionHandler: { [weak self] in
             Task { @MainActor in
                 self?.playerWindow?.orderOut(nil)
+                // Reset transform for next expand
+                contentView.layer?.transform = CATransform3DIdentity
             }
         }
     }
