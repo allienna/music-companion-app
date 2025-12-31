@@ -5,11 +5,13 @@ import SwiftUI
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private var menuBarController: MenuBarController?
     private var notchPlayerController: NotchPlayerController?
+    private var lyricsWindowController: LyricsWindowController?
     private var cancellables = Set<AnyCancellable>()
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         setupMenuBar()
         setupNotchPlayer()
+        setupLyricsWindow()
         setupMusicService()
     }
 
@@ -43,6 +45,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             return screen.safeAreaInsets.top > 0
         }
         return false
+    }
+
+    private func setupLyricsWindow() {
+        Task { @MainActor in
+            self.lyricsWindowController = LyricsWindowController()
+            // Initialize the lyrics service
+            _ = LyricsService.shared
+        }
     }
 
     private func setupMusicService() {

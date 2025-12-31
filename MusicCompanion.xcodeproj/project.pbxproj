@@ -7,14 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		059D3D058EDE5C0D242FE1C7 /* LyricsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E12D9CD66DA3EF8ABD8EC6A5 /* LyricsProvider.swift */; };
 		08BE71AF56B5C3272BAC67B2 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488445472375CC7AFA24554A /* SettingsView.swift */; };
 		0D792C4017BB56C8E14D1C29 /* MusicCompanionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05CB6B77C85F2A1AC151F1F8 /* MusicCompanionApp.swift */; };
 		18238D7701E0AD24CFD6C7FB /* SpotifyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D0DCDFEF12FC10A1B95A0D /* SpotifyService.swift */; };
+		19F201E221A57BF4E4279719 /* LyricsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C21ECE75B2997ADA61213E /* LyricsView.swift */; };
+		2A22B4F3F4EACF17C7280019 /* LyricsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68173ED16F712F2371332497 /* LyricsService.swift */; };
 		5FA5924C4642A353BB5A410C /* MenuBarPopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F7EE33A437CB702FEAC511 /* MenuBarPopoverView.swift */; };
 		627EE948635A372D7CBA1285 /* Music.m in Sources */ = {isa = PBXBuildFile; fileRef = 978CBE1EFBD5AC03E58C7600 /* Music.m */; };
+		6DDEC8395EBE37A800103569 /* LyricsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4DF3308C2685B549E99F9D /* LyricsViewModel.swift */; };
+		71CFCBA22AD5D1E955AA7D9B /* LyricsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D38748222ADCAEA15EF4F745 /* LyricsWindowController.swift */; };
 		748757AFAB139293641681AB /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 0172B01481805D6BB2435F0A /* KeyboardShortcuts */; };
 		764AF046D0C1BEB794F2CCB8 /* NotchPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CEAA96B33B55A58AC05820 /* NotchPlayerView.swift */; };
 		7CE949C0B4939BE71C24AFFF /* MusicServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0CA4A275F3438AF195ED44 /* MusicServiceProtocol.swift */; };
+		817A2403BB527504258C4DDA /* LyricsSyncEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45208F4480148B2044E635C /* LyricsSyncEngine.swift */; };
 		82A4C21CA563D3A5EDC71CCC /* MenuBarSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE2972CC0BDBBA246389E40 /* MenuBarSettings.swift */; };
 		88E7AE7FAEEF6A841D38C800 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22B71E2BD14D4F5267D0337F /* ScriptingBridge.framework */; };
 		8FFA323DB023A9F6F81DE02A /* MenuBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B3069D04099E0937D3A4BB /* MenuBarController.swift */; };
@@ -23,6 +29,8 @@
 		B40EF21AD43AA8E1DDE1A9F4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1FB0715591DFB29FBEC746 /* AppDelegate.swift */; };
 		B6AB4DDD3FCAB09545957D12 /* NotchPlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C238B4CEC383B8A3572459B4 /* NotchPlayerController.swift */; };
 		B859B95B1231A90992F14CB8 /* MarqueeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2543C4777EE6738F580CF03 /* MarqueeView.swift */; };
+		BFFC0F5D826BD8FFD9187782 /* LRCLIBProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CC394961F4F16BFF4F729B /* LRCLIBProvider.swift */; };
+		C150DAD99A317B1114199873 /* LyricsModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = D523793662476587CC0DA934 /* LyricsModels.swift */; };
 		C9384E5A0B4B50F205421864 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3475524FBA5C77F7304015 /* AppState.swift */; };
 		CC52752F9D1C9E33A2F60204 /* MenuBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E4CE4F5356620248DFB068 /* MenuBarViewModel.swift */; };
 		D1423C1CF46D22B9AB119E1A /* MusicServiceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6C51F54484FE9D13E34369 /* MusicServiceManager.swift */; };
@@ -46,19 +54,27 @@
 		51D0DCDFEF12FC10A1B95A0D /* SpotifyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyService.swift; sourceTree = "<group>"; };
 		5B1FB0715591DFB29FBEC746 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5DF60BFBC5892A7E7F4BA77B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		5F4DF3308C2685B549E99F9D /* LyricsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsViewModel.swift; sourceTree = "<group>"; };
+		68173ED16F712F2371332497 /* LyricsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsService.swift; sourceTree = "<group>"; };
+		70C21ECE75B2997ADA61213E /* LyricsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsView.swift; sourceTree = "<group>"; };
 		75E4CE4F5356620248DFB068 /* MenuBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarViewModel.swift; sourceTree = "<group>"; };
 		8BE2972CC0BDBBA246389E40 /* MenuBarSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarSettings.swift; sourceTree = "<group>"; };
 		96CEAA96B33B55A58AC05820 /* NotchPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotchPlayerView.swift; sourceTree = "<group>"; };
 		978CBE1EFBD5AC03E58C7600 /* Music.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Music.m; sourceTree = "<group>"; };
 		9DA8EBDB194B537116CB8C6E /* NotchPlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotchPlayerViewModel.swift; sourceTree = "<group>"; };
+		A1CC394961F4F16BFF4F729B /* LRCLIBProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LRCLIBProvider.swift; sourceTree = "<group>"; };
 		AC6C51F54484FE9D13E34369 /* MusicServiceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicServiceManager.swift; sourceTree = "<group>"; };
 		B2543C4777EE6738F580CF03 /* MarqueeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarqueeView.swift; sourceTree = "<group>"; };
 		B25B6DA27CA4E1669188448E /* MusicCompanion.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MusicCompanion.entitlements; sourceTree = "<group>"; };
 		B8F7EE33A437CB702FEAC511 /* MenuBarPopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarPopoverView.swift; sourceTree = "<group>"; };
 		C238B4CEC383B8A3572459B4 /* NotchPlayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotchPlayerController.swift; sourceTree = "<group>"; };
 		CC0CA4A275F3438AF195ED44 /* MusicServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicServiceProtocol.swift; sourceTree = "<group>"; };
+		D38748222ADCAEA15EF4F745 /* LyricsWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsWindowController.swift; sourceTree = "<group>"; };
+		D523793662476587CC0DA934 /* LyricsModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsModels.swift; sourceTree = "<group>"; };
+		E12D9CD66DA3EF8ABD8EC6A5 /* LyricsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsProvider.swift; sourceTree = "<group>"; };
 		E3576B6DC999D0C62E028EE4 /* AppleMusicService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleMusicService.swift; sourceTree = "<group>"; };
 		F255B513AB9044F96DE8A16D /* Track.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
+		F45208F4480148B2044E635C /* LyricsSyncEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsSyncEngine.swift; sourceTree = "<group>"; };
 		F4EE6E0A2066D868FBB1AFA4 /* Music.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Music.h; sourceTree = "<group>"; };
 		FF93F5895E47399E6CFB7766 /* MusicCompanion-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MusicCompanion-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -118,6 +134,9 @@
 		2C2DBA8B33C5529C80A1C055 /* Lyrics */ = {
 			isa = PBXGroup;
 			children = (
+				70C21ECE75B2997ADA61213E /* LyricsView.swift */,
+				5F4DF3308C2685B549E99F9D /* LyricsViewModel.swift */,
+				D38748222ADCAEA15EF4F745 /* LyricsWindowController.swift */,
 			);
 			path = Lyrics;
 			sourceTree = "<group>";
@@ -177,6 +196,11 @@
 		7BF57DE0646360622A25506D /* LyricsService */ = {
 			isa = PBXGroup;
 			children = (
+				A1CC394961F4F16BFF4F729B /* LRCLIBProvider.swift */,
+				D523793662476587CC0DA934 /* LyricsModels.swift */,
+				E12D9CD66DA3EF8ABD8EC6A5 /* LyricsProvider.swift */,
+				68173ED16F712F2371332497 /* LyricsService.swift */,
+				F45208F4480148B2044E635C /* LyricsSyncEngine.swift */,
 			);
 			path = LyricsService;
 			sourceTree = "<group>";
@@ -384,6 +408,14 @@
 				C9384E5A0B4B50F205421864 /* AppState.swift in Sources */,
 				A9FCE6B81F11B81B1D462927 /* AppleMusicService.swift in Sources */,
 				ED92447EE62AA38155C8E39F /* Constants.swift in Sources */,
+				BFFC0F5D826BD8FFD9187782 /* LRCLIBProvider.swift in Sources */,
+				C150DAD99A317B1114199873 /* LyricsModels.swift in Sources */,
+				059D3D058EDE5C0D242FE1C7 /* LyricsProvider.swift in Sources */,
+				2A22B4F3F4EACF17C7280019 /* LyricsService.swift in Sources */,
+				817A2403BB527504258C4DDA /* LyricsSyncEngine.swift in Sources */,
+				19F201E221A57BF4E4279719 /* LyricsView.swift in Sources */,
+				6DDEC8395EBE37A800103569 /* LyricsViewModel.swift in Sources */,
+				71CFCBA22AD5D1E955AA7D9B /* LyricsWindowController.swift in Sources */,
 				B859B95B1231A90992F14CB8 /* MarqueeView.swift in Sources */,
 				8FFA323DB023A9F6F81DE02A /* MenuBarController.swift in Sources */,
 				5FA5924C4642A353BB5A410C /* MenuBarPopoverView.swift in Sources */,

@@ -152,6 +152,8 @@ struct MenuBarPopoverView: View {
 
     // MARK: - Quick Actions
 
+    @ObservedObject private var appState = AppState.shared
+
     private var quickActionsView: some View {
         HStack {
             ActionButton(
@@ -159,6 +161,15 @@ struct MenuBarPopoverView: View {
                 isActive: viewModel.isLiked,
                 action: viewModel.toggleLike
             )
+
+            Spacer()
+
+            ActionButton(
+                systemName: appState.showLyrics ? "text.quote.rtl" : "text.quote",
+                isActive: appState.showLyrics,
+                action: { appState.showLyrics.toggle() }
+            )
+            .help("Toggle Lyrics")
 
             Spacer()
 
