@@ -4,6 +4,10 @@ struct NotchPlayerView: View {
     @ObservedObject var viewModel: NotchPlayerViewModel
     let isExpanded: Bool
 
+    // Progress bar interaction state
+    @State private var isDragging = false
+    @State private var dragProgress: Double = 0
+
     // Layout constants
     private let notchWidth: CGFloat = 200
     private let notchHeight: CGFloat = 32
@@ -124,20 +128,46 @@ struct NotchPlayerView: View {
     private var progressView: some View {
         VStack(spacing: 4) {
             GeometryReader { geometry in
+                let displayProgress = isDragging ? dragProgress : viewModel.progress
+
                 ZStack(alignment: .leading) {
+                    // Background track
                     Capsule()
                         .fill(.white.opacity(0.2))
                         .frame(height: 4)
 
+                    // Progress fill
                     Capsule()
                         .fill(.white)
-                        .frame(width: max(0, geometry.size.width * viewModel.progress), height: 4)
+                        .frame(width: max(0, geometry.size.width * displayProgress), height: 4)
+
+                    // Scrubber handle (visible when dragging)
+                    if isDragging {
+                        Circle()
+                            .fill(.white)
+                            .frame(width: 12, height: 12)
+                            .offset(x: max(0, min(geometry.size.width - 12, geometry.size.width * displayProgress - 6)))
+                    }
                 }
+                .frame(height: 12)
+                .contentShape(Rectangle())
+                .gesture(
+                    DragGesture(minimumDistance: 0)
+                        .onChanged { value in
+                            isDragging = true
+                            dragProgress = max(0, min(1, value.location.x / geometry.size.width))
+                        }
+                        .onEnded { value in
+                            let finalProgress = max(0, min(1, value.location.x / geometry.size.width))
+                            viewModel.seek(to: finalProgress)
+                            isDragging = false
+                        }
+                )
             }
-            .frame(height: 4)
+            .frame(height: 12)
 
             HStack {
-                Text(viewModel.elapsedTimeString)
+                Text(isDragging ? formatTime(dragProgress * (viewModel.currentTrack?.duration ?? 0)) : viewModel.elapsedTimeString)
                     .font(.system(size: 10, weight: .medium))
                     .foregroundStyle(.white.opacity(0.5))
                     .monospacedDigit()
@@ -150,6 +180,12 @@ struct NotchPlayerView: View {
                     .monospacedDigit()
             }
         }
+    }
+
+    private func formatTime(_ time: TimeInterval) -> String {
+        let minutes = Int(time) / 60
+        let seconds = Int(time) % 60
+        return String(format: "%d:%02d", minutes, seconds)
     }
 
     // MARK: - Playback Controls
