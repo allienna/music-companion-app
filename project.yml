@@ -26,9 +26,9 @@ packages:
   LaunchAtLogin:
     url: https://github.com/sindresorhus/LaunchAtLogin-Modern
     from: "1.0.0"
-  DynamicNotchKit:
-    url: https://github.com/MrKai77/DynamicNotchKit
-    from: "1.0.0"
+  # DynamicNotchKit: temporarily disabled - SwiftUICore linking issue on Tahoe
+  #   url: https://github.com/MrKai77/DynamicNotchKit
+  #   from: "1.0.0"
 
 targets:
   MusicCompanion:
@@ -41,7 +41,9 @@ targets:
     dependencies:
       - package: KeyboardShortcuts
       - package: LaunchAtLogin
-      - package: DynamicNotchKit
+      # - package: DynamicNotchKit
+      - framework: ScriptingBridge.framework
+        embed: false
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.allienna.MusicCompanion
@@ -49,6 +51,7 @@ targets:
         PRODUCT_NAME: "Music Companion"
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         COMBINE_HIDPI_IMAGES: YES
+        SWIFT_OBJC_BRIDGING_HEADER: MusicCompanion/MusicCompanion-Bridging-Header.h
         LD_RUNPATH_SEARCH_PATHS:
           - "@executable_path/../Frameworks"
       configs:

@@ -29,8 +29,8 @@ final class MusicServiceManager: ObservableObject {
 
     private func setupServices() {
         // Register available music services
-        // TODO: Add AppleMusicService and SpotifyService when implemented
-        // services.append(AppleMusicService())
+        services.append(AppleMusicService())
+        // TODO: Add SpotifyService when implemented
         // services.append(SpotifyService())
     }
 

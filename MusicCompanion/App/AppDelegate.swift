@@ -27,7 +27,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func setupMusicService() {
-        // Initialize music service and subscribe to updates
         Task {
             await AppState.shared.musicServiceManager.startMonitoring()
         }
