@@ -20,6 +20,7 @@ final class AppState: ObservableObject {
     @Published var showInMenuBar: Bool = true
     @Published var showNotchPlayer: Bool = true
     @Published var showMiniPlayer: Bool = false
+    @Published var menuBarSettings: MenuBarSettings = .default
 
     private var cancellables = Set<AnyCancellable>()
 

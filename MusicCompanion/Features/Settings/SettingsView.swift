@@ -32,6 +32,8 @@ struct SettingsView: View {
 // MARK: - General Settings
 
 struct GeneralSettingsView: View {
+    @ObservedObject private var appState = AppState.shared
+
     var body: some View {
         Form {
             LaunchAtLogin.Toggle("Launch at login")
@@ -39,6 +41,22 @@ struct GeneralSettingsView: View {
             Section("Menu Bar") {
                 Toggle("Show song info in menu bar", isOn: .constant(true))
                 Toggle("Show album art in menu bar", isOn: .constant(false))
+
+                Toggle("Fixed width with scrolling", isOn: $appState.menuBarSettings.useFixedWidth)
+
+                if appState.menuBarSettings.useFixedWidth {
+                    HStack {
+                        Text("Width")
+                        Slider(
+                            value: $appState.menuBarSettings.fixedWidth,
+                            in: 100 ... 400,
+                            step: 10
+                        )
+                        Text("\(Int(appState.menuBarSettings.fixedWidth))pt")
+                            .monospacedDigit()
+                            .frame(width: 50, alignment: .trailing)
+                    }
+                }
             }
 
             Section("Notifications") {

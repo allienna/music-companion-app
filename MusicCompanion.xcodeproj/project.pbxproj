@@ -13,11 +13,13 @@
 		627EE948635A372D7CBA1285 /* Music.m in Sources */ = {isa = PBXBuildFile; fileRef = 978CBE1EFBD5AC03E58C7600 /* Music.m */; };
 		748757AFAB139293641681AB /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 0172B01481805D6BB2435F0A /* KeyboardShortcuts */; };
 		7CE949C0B4939BE71C24AFFF /* MusicServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0CA4A275F3438AF195ED44 /* MusicServiceProtocol.swift */; };
+		82A4C21CA563D3A5EDC71CCC /* MenuBarSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE2972CC0BDBBA246389E40 /* MenuBarSettings.swift */; };
 		88E7AE7FAEEF6A841D38C800 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22B71E2BD14D4F5267D0337F /* ScriptingBridge.framework */; };
 		8FFA323DB023A9F6F81DE02A /* MenuBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B3069D04099E0937D3A4BB /* MenuBarController.swift */; };
 		A9FCE6B81F11B81B1D462927 /* AppleMusicService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3576B6DC999D0C62E028EE4 /* AppleMusicService.swift */; };
 		B065D7E6AA438894B746EDED /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = F255B513AB9044F96DE8A16D /* Track.swift */; };
 		B40EF21AD43AA8E1DDE1A9F4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1FB0715591DFB29FBEC746 /* AppDelegate.swift */; };
+		B859B95B1231A90992F14CB8 /* MarqueeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2543C4777EE6738F580CF03 /* MarqueeView.swift */; };
 		C9384E5A0B4B50F205421864 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3475524FBA5C77F7304015 /* AppState.swift */; };
 		CC52752F9D1C9E33A2F60204 /* MenuBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E4CE4F5356620248DFB068 /* MenuBarViewModel.swift */; };
 		D1423C1CF46D22B9AB119E1A /* MusicServiceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6C51F54484FE9D13E34369 /* MusicServiceManager.swift */; };
@@ -40,8 +42,10 @@
 		5B1FB0715591DFB29FBEC746 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5DF60BFBC5892A7E7F4BA77B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		75E4CE4F5356620248DFB068 /* MenuBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarViewModel.swift; sourceTree = "<group>"; };
+		8BE2972CC0BDBBA246389E40 /* MenuBarSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarSettings.swift; sourceTree = "<group>"; };
 		978CBE1EFBD5AC03E58C7600 /* Music.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Music.m; sourceTree = "<group>"; };
 		AC6C51F54484FE9D13E34369 /* MusicServiceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicServiceManager.swift; sourceTree = "<group>"; };
+		B2543C4777EE6738F580CF03 /* MarqueeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarqueeView.swift; sourceTree = "<group>"; };
 		B25B6DA27CA4E1669188448E /* MusicCompanion.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MusicCompanion.entitlements; sourceTree = "<group>"; };
 		B8F7EE33A437CB702FEAC511 /* MenuBarPopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarPopoverView.swift; sourceTree = "<group>"; };
 		CC0CA4A275F3438AF195ED44 /* MusicServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicServiceProtocol.swift; sourceTree = "<group>"; };
@@ -65,6 +69,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		01191ACD7644EBDC0136FEE6 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				8BE2972CC0BDBBA246389E40 /* MenuBarSettings.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		066BDAA0665CB519078381DB /* Features */ = {
 			isa = PBXGroup;
 			children = (
@@ -182,6 +194,7 @@
 		80CEC53ADB2B5AC5B0D8954A /* MenuBar */ = {
 			isa = PBXGroup;
 			children = (
+				B2543C4777EE6738F580CF03 /* MarqueeView.swift */,
 				34B3069D04099E0937D3A4BB /* MenuBarController.swift */,
 				B8F7EE33A437CB702FEAC511 /* MenuBarPopoverView.swift */,
 				75E4CE4F5356620248DFB068 /* MenuBarViewModel.swift */,
@@ -214,6 +227,7 @@
 			children = (
 				4ED55C88AD9904499337E122 /* App */,
 				066BDAA0665CB519078381DB /* Features */,
+				01191ACD7644EBDC0136FEE6 /* Models */,
 				7F66B4126AA9F5F531E15A9E /* Resources */,
 				B8FE8438F3C79A0BC0B4CF33 /* Services */,
 				6DCA468BAF4A295903E270F0 /* Shared */,
@@ -358,8 +372,10 @@
 				C9384E5A0B4B50F205421864 /* AppState.swift in Sources */,
 				A9FCE6B81F11B81B1D462927 /* AppleMusicService.swift in Sources */,
 				ED92447EE62AA38155C8E39F /* Constants.swift in Sources */,
+				B859B95B1231A90992F14CB8 /* MarqueeView.swift in Sources */,
 				8FFA323DB023A9F6F81DE02A /* MenuBarController.swift in Sources */,
 				5FA5924C4642A353BB5A410C /* MenuBarPopoverView.swift in Sources */,
+				82A4C21CA563D3A5EDC71CCC /* MenuBarSettings.swift in Sources */,
 				CC52752F9D1C9E33A2F60204 /* MenuBarViewModel.swift in Sources */,
 				627EE948635A372D7CBA1285 /* Music.m in Sources */,
 				F95064C481712C2BC50E432D /* MusicBridge.swift in Sources */,
