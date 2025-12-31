@@ -111,9 +111,9 @@ final class MusicServiceManager: ObservableObject {
         guard let service = activeService else {
             throw MusicServiceError.notAvailable
         }
-        try await service.seek(to: position)
-        // Optimistically update position immediately for responsive UI
+        // Optimistically update position BEFORE the seek for immediate UI response
         playbackPositionSubject.send(position)
+        try await service.seek(to: position)
     }
 
     func setVolume(_ volume: Float) async throws {
