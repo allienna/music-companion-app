@@ -42,7 +42,7 @@ struct NotchPlayerView: View {
             mainContentView
         }
         .background(
-            ExpandedNotchShape(notchWidth: notchWidth, topCornerRadius: notchHeight, bottomCornerRadius: cornerRadius)
+            ExpandedNotchShape(notchWidth: notchWidth, topCornerRadius: notchHeight, bottomCornerRadius: notchHeight)
                 .fill(Color.black)
         )
         .frame(width: expandedWidth, height: expandedHeight)
