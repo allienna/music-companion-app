@@ -13,6 +13,9 @@ final class MenuBarController: NSObject {
     private var useMarquee: Bool = false
     private var marqueeWidth: CGFloat = 200
 
+    // Default icon for when no artwork is available
+    private let defaultIcon = NSImage(systemSymbolName: "music.note", accessibilityDescription: "Music Companion")
+
     override init() {
         super.init()
         setupStatusItem()
@@ -146,21 +149,46 @@ final class MenuBarController: NSObject {
     }
 
     private func updateStatusItemTitle(with track: Track?) {
+        // Create artwork image for menu bar (18x18 with rounded corners)
+        let artworkImage = createMenuBarArtwork(from: track?.artworkData)
+
         if useMarquee {
             if let track {
-                statusItemView?.updateContent(title: track.title, artist: track.artist)
+                statusItemView?.updateContent(title: track.title, artist: track.artist, artwork: artworkImage)
             } else {
-                statusItemView?.updateContent(title: nil, artist: nil)
+                statusItemView?.updateContent(title: nil, artist: nil, artwork: nil)
             }
         } else {
             guard let button = statusItem?.button else { return }
 
+            button.image = artworkImage ?? defaultIcon
             if let track {
                 button.title = " \(track.title) — \(track.artist)"
             } else {
                 button.title = ""
             }
         }
+    }
+
+    private func createMenuBarArtwork(from data: Data?) -> NSImage? {
+        guard let data, let originalImage = NSImage(data: data) else { return nil }
+
+        let size: CGFloat = 18
+        let cornerRadius: CGFloat = 4
+
+        let newImage = NSImage(size: NSSize(width: size, height: size))
+        newImage.lockFocus()
+
+        let rect = NSRect(x: 0, y: 0, width: size, height: size)
+        let path = NSBezierPath(roundedRect: rect, xRadius: cornerRadius, yRadius: cornerRadius)
+        path.addClip()
+
+        originalImage.draw(in: rect, from: .zero, operation: .sourceOver, fraction: 1.0)
+
+        newImage.unlockFocus()
+        newImage.isTemplate = false
+
+        return newImage
     }
 
     // MARK: - Actions
@@ -193,8 +221,14 @@ final class MenuBarStatusItemView: NSView {
         imageView.image = NSImage(systemSymbolName: "music.note", accessibilityDescription: "Music Companion")
         imageView.contentTintColor = .labelColor
         imageView.symbolConfiguration = .init(pointSize: 13, weight: .medium)
+        imageView.wantsLayer = true
+        imageView.layer?.cornerRadius = 4
+        imageView.layer?.masksToBounds = true
         return imageView
     }()
+
+    private let defaultIcon = NSImage(systemSymbolName: "music.note", accessibilityDescription: "Music Companion")
+    private var hasArtwork = false
 
     private let marqueeView: MarqueeView
     private weak var target: AnyObject?
@@ -244,19 +278,32 @@ final class MenuBarStatusItemView: NSView {
     }
 
     private func updateColors() {
-        // Icon color automatically adapts via .labelColor
-        iconView.contentTintColor = isHighlighted ? .selectedMenuItemTextColor : .labelColor
+        // Only tint the icon when using default icon (no artwork)
+        if !hasArtwork {
+            iconView.contentTintColor = isHighlighted ? .selectedMenuItemTextColor : .labelColor
+        }
     }
 
     // MARK: - Content
 
-    func updateContent(title: String?, artist: String?) {
+    func updateContent(title: String?, artist: String?, artwork: NSImage?) {
         if let title, let artist {
             marqueeView.text = "\(title) — \(artist)"
         } else if let title {
             marqueeView.text = title
         } else {
             marqueeView.text = ""
+        }
+
+        // Update artwork
+        if let artwork {
+            hasArtwork = true
+            iconView.image = artwork
+            iconView.contentTintColor = nil // Don't tint artwork
+        } else {
+            hasArtwork = false
+            iconView.image = defaultIcon
+            updateColors()
         }
     }
 
