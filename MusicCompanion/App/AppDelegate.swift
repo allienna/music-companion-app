@@ -5,12 +5,14 @@ import SwiftUI
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private var menuBarController: MenuBarController?
     private var notchPlayerController: NotchPlayerController?
+    private var miniPlayerController: MiniPlayerController?
     private var lyricsWindowController: LyricsWindowController?
     private var cancellables = Set<AnyCancellable>()
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         setupMenuBar()
         setupNotchPlayer()
+        setupMiniPlayer()
         setupLyricsWindow()
         setupMusicService()
     }
@@ -45,6 +47,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             return screen.safeAreaInsets.top > 0
         }
         return false
+    }
+
+    private func setupMiniPlayer() {
+        Task { @MainActor in
+            self.miniPlayerController = MiniPlayerController()
+        }
     }
 
     private func setupLyricsWindow() {

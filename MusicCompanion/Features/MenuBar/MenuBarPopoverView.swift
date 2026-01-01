@@ -174,6 +174,15 @@ struct MenuBarPopoverView: View {
             Spacer()
 
             ActionButton(
+                systemName: appState.showMiniPlayer ? "pip.fill" : "pip",
+                isActive: appState.showMiniPlayer,
+                action: { appState.showMiniPlayer.toggle() }
+            )
+            .help("Toggle Mini Player")
+
+            Spacer()
+
+            ActionButton(
                 systemName: "gear",
                 action: { openSettings() }
             )
