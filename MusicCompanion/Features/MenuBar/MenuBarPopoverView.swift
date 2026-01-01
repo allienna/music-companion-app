@@ -184,7 +184,10 @@ struct MenuBarPopoverView: View {
 
             ActionButton(
                 systemName: "gear",
-                action: { openSettings() }
+                action: {
+                    openSettings()
+                    NSApp.activate(ignoringOtherApps: true)
+                }
             )
         }
     }
