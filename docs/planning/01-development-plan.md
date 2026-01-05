@@ -340,42 +340,19 @@ protocol MusicServiceProtocol {
 "Build floating lyrics window with word-by-word highlighting"
 ```
 
-#### 3.2 Discord Rich Presence
+#### ~~3.2 Discord Rich Presence~~ — REMOVED
 
-**Approach:** Discord Game SDK or IPC
+> **Status:** Out of scope (January 2025)
 
-**Claude Code Tasks:**
-```
-"Implement Discord Rich Presence using Discord's IPC protocol"
-"Create DiscordService that updates presence on track change"
-"Add settings for what info to share (track, artist, album art)"
-```
+#### ~~3.3 Listening Statistics~~ — REMOVED
 
-#### 3.3 Listening Statistics
+> **Status:** Out of scope (January 2025)
 
-**Data Model:**
-```swift
-@Model
-class PlayRecord {
-    var trackId: String
-    var trackName: String
-    var artistName: String
-    var albumName: String
-    var playedAt: Date
-    var duration: TimeInterval
-    var source: MusicSource
-}
-```
+#### ~~3.4 Last.fm Scrobbling~~ — REMOVED
 
-**Claude Code Tasks:**
-```
-"Create SwiftData models for tracking play history"
-"Build StatsService that records plays and calculates insights"
-"Create charts using Swift Charts (top artists, listening time, etc.)"
-"Design shareable 'mini-wrapped' card view"
-```
+> **Status:** Out of scope (January 2025)
 
-#### 3.4 macOS Widgets
+#### 3.2 macOS Widgets
 
 **Widget Types:**
 - Small: Album art only

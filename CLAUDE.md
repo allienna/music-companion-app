@@ -8,7 +8,7 @@ This file provides context and instructions for Claude Code when working on this
 **Type:** Native macOS application  
 **Purpose:** Display "Now Playing" information and control playback for Spotify and Apple Music  
 **Inspiration:** Tuneful, Sleeve  
-**Differentiators:** Lyrics, Discord status, statistics, widgets
+**Differentiators:** Lyrics, widgets
 
 ## Tech Stack
 
@@ -231,9 +231,7 @@ swiftlint
 
 ### Phase 3 (Differentiators)
 1. Real-time lyrics
-2. Discord Rich Presence
-3. Listening statistics
-4. macOS widgets
+2. macOS widgets
 
 ## Notes for Claude Code
 
