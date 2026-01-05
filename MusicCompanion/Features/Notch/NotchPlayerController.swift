@@ -26,6 +26,7 @@ final class NotchPlayerController {
         setupHoverWindow()
         setupPlayerWindow()
         subscribeToSettings()
+        observeScreenChanges()
     }
 
     deinit {
@@ -39,6 +40,10 @@ final class NotchPlayerController {
     }
 
     private func setupHoverWindow() {
+        // Clean up existing window
+        hoverWindow?.orderOut(nil)
+        hoverWindow = nil
+
         guard let screen = NSScreen.main else { return }
 
         let screenFrame = screen.frame
@@ -79,6 +84,10 @@ final class NotchPlayerController {
     }
 
     private func setupPlayerWindow() {
+        // Clean up existing window
+        playerWindow?.orderOut(nil)
+        playerWindow = nil
+
         guard let screen = NSScreen.main, let viewModel else { return }
 
         let screenFrame = screen.frame
@@ -141,6 +150,27 @@ final class NotchPlayerController {
             .store(in: &cancellables)
     }
 
+    private func observeScreenChanges() {
+        NotificationCenter.default.publisher(for: NSApplication.didChangeScreenParametersNotification)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.handleScreenChange()
+            }
+            .store(in: &cancellables)
+    }
+
+    private func handleScreenChange() {
+        // Collapse if expanded
+        if isExpanded {
+            collapse()
+        }
+
+        // Recreate windows for new screen configuration
+        setupHoverWindow()
+        setupPlayerWindow()
+        updateVisibility()
+    }
+
     private func updateVisibility() {
         let shouldShow = AppState.shared.showNotchPlayer && hasNotch()
 
@@ -155,10 +185,22 @@ final class NotchPlayerController {
 
     private func hasNotch() -> Bool {
         guard let screen = NSScreen.main else { return false }
+
+        // Check if this screen actually has a notch (safe area at top)
         if #available(macOS 12.0, *) {
+            // safeAreaInsets.top > 0 indicates a notch on THIS screen
+            // External displays will have safeAreaInsets.top == 0
             return screen.safeAreaInsets.top > 0
         }
         return false
+    }
+
+    /// Returns the screen with a notch, if any is currently active
+    private func screenWithNotch() -> NSScreen? {
+        if #available(macOS 12.0, *) {
+            return NSScreen.screens.first { $0.safeAreaInsets.top > 0 }
+        }
+        return nil
     }
 
     // MARK: - Expansion

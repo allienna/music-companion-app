@@ -33,20 +33,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func setupNotchPlayer() {
-        // Only create notch player on Macs with a notch
-        if hasNotch() {
-            Task { @MainActor in
-                self.notchPlayerController = NotchPlayerController()
-            }
+        // Always create the controller - it handles visibility based on current screen
+        // This allows proper handling when switching between external display and built-in
+        Task { @MainActor in
+            self.notchPlayerController = NotchPlayerController()
         }
-    }
-
-    private func hasNotch() -> Bool {
-        guard let screen = NSScreen.main else { return false }
-        if #available(macOS 12.0, *) {
-            return screen.safeAreaInsets.top > 0
-        }
-        return false
     }
 
     private func setupMiniPlayer() {
