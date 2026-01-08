@@ -127,14 +127,17 @@ final class AppleMusicService: MusicServiceProtocol {
     }
 
     private func startPositionTimer() {
-        positionTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-            guard let self,
-                  let app = self.musicApp,
-                  app.isRunning == true,
-                  self.playbackStateSubject.value == .playing else { return }
+        // Ensure timer runs on main run loop
+        DispatchQueue.main.async { [weak self] in
+            self?.positionTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+                guard let self,
+                      let app = self.musicApp,
+                      app.isRunning == true,
+                      self.playbackStateSubject.value == .playing else { return }
 
-            if let position = app.playerPosition {
-                self.playbackPositionSubject.send(position)
+                if let position = app.playerPosition {
+                    self.playbackPositionSubject.send(position)
+                }
             }
         }
     }

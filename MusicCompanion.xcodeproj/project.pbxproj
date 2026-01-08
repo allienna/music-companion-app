@@ -116,17 +116,8 @@
 				F268A7DC509512D148C1C89C /* Notch */,
 				D08AA0C1C57EE8E0B4641003 /* NowPlaying */,
 				7D9298B6F1D534D0758ED1B0 /* Settings */,
-				0ACBD5F8A782E890FC7F3F38 /* Statistics */,
-				6472F61FD862FFB00C4C31BE /* Themes */,
 			);
 			path = Features;
-			sourceTree = "<group>";
-		};
-		0ACBD5F8A782E890FC7F3F38 /* Statistics */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Statistics;
 			sourceTree = "<group>";
 		};
 		143F471EE1EF6CFF43CC00CA /* Frameworks */ = {
@@ -182,18 +173,9 @@
 			path = App;
 			sourceTree = "<group>";
 		};
-		6472F61FD862FFB00C4C31BE /* Themes */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Themes;
-			sourceTree = "<group>";
-		};
 		6DCA468BAF4A295903E270F0 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				CDD46E43076533F7181CCE74 /* Extensions */,
-				FD4B99CF88C8A8FC3C5CA8CA /* Utilities */,
 				4C1F8785BE902D35F01F9798 /* Constants.swift */,
 			);
 			path = Shared;
@@ -240,13 +222,6 @@
 			path = MenuBar;
 			sourceTree = "<group>";
 		};
-		950FA002C480826B1CCCA0BD /* DiscordService */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = DiscordService;
-			sourceTree = "<group>";
-		};
 		A01DFE20F16977FCA3C671AD /* MusicService */ = {
 			isa = PBXGroup;
 			children = (
@@ -278,10 +253,8 @@
 		B8FE8438F3C79A0BC0B4CF33 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				950FA002C480826B1CCCA0BD /* DiscordService */,
 				7BF57DE0646360622A25506D /* LyricsService */,
 				A01DFE20F16977FCA3C671AD /* MusicService */,
-				EE794166CC1C5F2D2C220FDD /* ScrobblingService */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -296,26 +269,12 @@
 			path = MiniPlayer;
 			sourceTree = "<group>";
 		};
-		CDD46E43076533F7181CCE74 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Extensions;
-			sourceTree = "<group>";
-		};
 		D08AA0C1C57EE8E0B4641003 /* NowPlaying */ = {
 			isa = PBXGroup;
 			children = (
 				437EF8ADD6516C7BEE308E69 /* Models */,
 			);
 			path = NowPlaying;
-			sourceTree = "<group>";
-		};
-		EE794166CC1C5F2D2C220FDD /* ScrobblingService */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ScrobblingService;
 			sourceTree = "<group>";
 		};
 		F268A7DC509512D148C1C89C /* Notch */ = {
@@ -326,13 +285,6 @@
 				9DA8EBDB194B537116CB8C6E /* NotchPlayerViewModel.swift */,
 			);
 			path = Notch;
-			sourceTree = "<group>";
-		};
-		FD4B99CF88C8A8FC3C5CA8CA /* Utilities */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Utilities;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

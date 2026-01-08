@@ -202,14 +202,17 @@ final class SpotifyService: MusicServiceProtocol {
     }
 
     private func startPositionTimer() {
-        positionTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-            guard let self, self.playbackStateSubject.value == .playing else { return }
+        // Ensure timer runs on main run loop
+        DispatchQueue.main.async { [weak self] in
+            self?.positionTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+                guard let self, self.playbackStateSubject.value == .playing else { return }
 
-            // Update position using AppleScript (handle locale-specific decimal separator)
-            if let result = self.runAppleScript("tell application \"Spotify\" to player position") {
-                let positionString = result.replacingOccurrences(of: ",", with: ".")
-                if let position = Double(positionString) {
-                    self.playbackPositionSubject.send(position)
+                // Update position using AppleScript (handle locale-specific decimal separator)
+                if let result = self.runAppleScript("tell application \"Spotify\" to player position") {
+                    let positionString = result.replacingOccurrences(of: ",", with: ".")
+                    if let position = Double(positionString) {
+                        self.playbackPositionSubject.send(position)
+                    }
                 }
             }
         }

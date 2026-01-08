@@ -55,24 +55,30 @@ final class MusicServiceManager: ObservableObject {
     }
 
     private func subscribeToService(_ service: MusicServiceProtocol) {
+        // Combine track with state to sync them together when track arrives
         service.currentTrack
-            .sink { [weak self] track in
-                if track != nil {
-                    self?.activeService = service
-                    self?.currentTrackSubject.send(track)
-                }
+            .combineLatest(service.playbackState)
+            .sink { [weak self] track, state in
+                guard let self, let track else { return }
+                self.activeService = service
+                self.currentTrackSubject.send(track)
+                self.playbackStateSubject.send(state)
             }
             .store(in: &cancellables)
 
+        // Forward playback state changes from active service
         service.playbackState
             .sink { [weak self] state in
-                self?.playbackStateSubject.send(state)
+                guard let self, self.activeService?.source == service.source else { return }
+                self.playbackStateSubject.send(state)
             }
             .store(in: &cancellables)
 
+        // Forward position updates from active service
         service.playbackPosition
             .sink { [weak self] position in
-                self?.playbackPositionSubject.send(position)
+                guard let self, self.activeService?.source == service.source else { return }
+                self.playbackPositionSubject.send(position)
             }
             .store(in: &cancellables)
     }
