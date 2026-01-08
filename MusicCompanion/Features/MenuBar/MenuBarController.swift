@@ -8,10 +8,9 @@ final class MenuBarController: NSObject {
     private var eventMonitor: Any?
     private var cancellables = Set<AnyCancellable>()
 
-    // Marquee components
-    private var statusItemView: MenuBarStatusItemView?
-    private var useMarquee: Bool = false
-    private var marqueeWidth: CGFloat = 200
+    // Fixed width mode
+    private var useFixedWidth: Bool = false
+    private var fixedWidth: CGFloat = 200
 
     // Default icon for when no artwork is available
     private let defaultIcon = NSImage(systemSymbolName: "music.note", accessibilityDescription: "Music Companion")
@@ -44,38 +43,22 @@ final class MenuBarController: NSObject {
         button.target = self
     }
 
-    private func setupMarqueeView() {
+    private func setupFixedWidthView() {
         guard let statusItem else { return }
 
-        // Remove existing view if any
-        statusItemView?.removeFromSuperview()
+        // Use fixed length with standard button
+        statusItem.length = fixedWidth + 30
 
-        // Create custom view for marquee mode
-        statusItemView = MenuBarStatusItemView(
-            maxWidth: marqueeWidth,
-            target: self,
-            action: #selector(togglePopover)
-        )
-
-        // Set fixed length and custom view
-        statusItem.length = marqueeWidth + 30 // Extra space for icon and padding
-        statusItem.button?.subviews.forEach { $0.removeFromSuperview() }
-
-        if let button = statusItem.button, let view = statusItemView {
-            view.frame = button.bounds
-            view.autoresizingMask = [.width, .height]
-            button.addSubview(view)
-            button.title = ""
-            button.image = nil
+        if let button = statusItem.button {
+            button.imagePosition = .imageLeading
+            button.image = defaultIcon
+            button.action = #selector(togglePopover)
+            button.target = self
         }
     }
 
-    private func setupStandardView() {
+    private func setupVariableWidthView() {
         guard let statusItem else { return }
-
-        // Remove marquee view if present
-        statusItemView?.removeFromSuperview()
-        statusItemView = nil
 
         // Reset to variable length with standard button
         statusItem.length = NSStatusItem.variableLength
@@ -127,46 +110,37 @@ final class MenuBarController: NSObject {
 
     @MainActor
     private func updateMenuBarMode(settings: MenuBarSettings) {
-        let shouldUseMarquee = settings.useFixedWidth
-        marqueeWidth = settings.fixedWidth
+        let shouldUseFixedWidth = settings.useFixedWidth
+        fixedWidth = settings.fixedWidth
 
-        if shouldUseMarquee != useMarquee {
-            useMarquee = shouldUseMarquee
+        if shouldUseFixedWidth != useFixedWidth {
+            useFixedWidth = shouldUseFixedWidth
 
-            if useMarquee {
-                setupMarqueeView()
+            if useFixedWidth {
+                setupFixedWidthView()
             } else {
-                setupStandardView()
+                setupVariableWidthView()
             }
 
             // Re-apply current track
             updateStatusItemTitle(with: AppState.shared.currentTrack)
-        } else if useMarquee {
+        } else if useFixedWidth {
             // Update width if changed
-            statusItemView?.updateMaxWidth(marqueeWidth)
-            statusItem?.length = marqueeWidth + 30
+            statusItem?.length = fixedWidth + 30
         }
     }
 
     private func updateStatusItemTitle(with track: Track?) {
+        guard let button = statusItem?.button else { return }
+
         // Create artwork image for menu bar (18x18 with rounded corners)
         let artworkImage = createMenuBarArtwork(from: track?.artworkData)
+        button.image = artworkImage ?? defaultIcon
 
-        if useMarquee {
-            if let track {
-                statusItemView?.updateContent(title: track.title, artist: track.artist, artwork: artworkImage)
-            } else {
-                statusItemView?.updateContent(title: nil, artist: nil, artwork: nil)
-            }
+        if let track {
+            button.title = " \(track.title) — \(track.artist)"
         } else {
-            guard let button = statusItem?.button else { return }
-
-            button.image = artworkImage ?? defaultIcon
-            if let track {
-                button.title = " \(track.title) — \(track.artist)"
-            } else {
-                button.title = ""
-            }
+            button.title = ""
         }
     }
 
@@ -194,6 +168,7 @@ final class MenuBarController: NSObject {
     // MARK: - Actions
 
     @objc private func togglePopover() {
+        print("🟢 togglePopover called! isShown: \(popover?.isShown ?? false)")
         if popover?.isShown == true {
             closePopover()
         } else {
@@ -209,131 +184,5 @@ final class MenuBarController: NSObject {
 
     private func closePopover() {
         popover?.performClose(nil)
-    }
-}
-
-// MARK: - Menu Bar Status Item View
-
-/// Custom view for the menu bar status item that supports marquee scrolling and theme changes
-final class MenuBarStatusItemView: NSView {
-    private let iconView: NSImageView = {
-        let imageView = NSImageView()
-        imageView.image = NSImage(systemSymbolName: "music.note", accessibilityDescription: "Music Companion")
-        imageView.contentTintColor = .labelColor
-        imageView.symbolConfiguration = .init(pointSize: 13, weight: .medium)
-        imageView.wantsLayer = true
-        imageView.layer?.cornerRadius = 4
-        imageView.layer?.masksToBounds = true
-        return imageView
-    }()
-
-    private let defaultIcon = NSImage(systemSymbolName: "music.note", accessibilityDescription: "Music Companion")
-    private var hasArtwork = false
-
-    private let marqueeView: MarqueeView
-    private weak var target: AnyObject?
-    private var action: Selector?
-    private var isHighlighted = false
-
-    init(maxWidth: CGFloat, target: AnyObject?, action: Selector?) {
-        self.marqueeView = MarqueeView.forMenuBar(maxWidth: maxWidth)
-        self.target = target
-        self.action = action
-        super.init(frame: .zero)
-        setupViews()
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    private func setupViews() {
-        wantsLayer = true
-
-        addSubview(iconView)
-        addSubview(marqueeView)
-
-        iconView.translatesAutoresizingMaskIntoConstraints = false
-        marqueeView.translatesAutoresizingMaskIntoConstraints = false
-
-        NSLayoutConstraint.activate([
-            iconView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 6),
-            iconView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            iconView.widthAnchor.constraint(equalToConstant: 16),
-            iconView.heightAnchor.constraint(equalToConstant: 16),
-
-            marqueeView.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 6),
-            marqueeView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -6),
-            marqueeView.centerYAnchor.constraint(equalTo: centerYAnchor),
-        ])
-
-        updateColors()
-    }
-
-    // MARK: - Theme Support
-
-    override func viewDidChangeEffectiveAppearance() {
-        super.viewDidChangeEffectiveAppearance()
-        updateColors()
-    }
-
-    private func updateColors() {
-        // Only tint the icon when using default icon (no artwork)
-        if !hasArtwork {
-            iconView.contentTintColor = isHighlighted ? .selectedMenuItemTextColor : .labelColor
-        }
-    }
-
-    // MARK: - Content
-
-    func updateContent(title: String?, artist: String?, artwork: NSImage?) {
-        if let title, let artist {
-            marqueeView.text = "\(title) — \(artist)"
-        } else if let title {
-            marqueeView.text = title
-        } else {
-            marqueeView.text = ""
-        }
-
-        // Update artwork
-        if let artwork {
-            hasArtwork = true
-            iconView.image = artwork
-            iconView.contentTintColor = nil // Don't tint artwork
-        } else {
-            hasArtwork = false
-            iconView.image = defaultIcon
-            updateColors()
-        }
-    }
-
-    func updateMaxWidth(_ width: CGFloat) {
-        marqueeView.maxWidth = width
-    }
-
-    // MARK: - Mouse Handling
-
-    override func mouseDown(with event: NSEvent) {
-        isHighlighted = true
-        updateColors()
-
-        if let target, let action {
-            NSApp.sendAction(action, to: target, from: self)
-        }
-
-        // Reset highlight after a short delay
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
-            self?.isHighlighted = false
-            self?.updateColors()
-        }
-    }
-
-    override func mouseEntered(with event: NSEvent) {
-        // Could add hover effect here if desired
-    }
-
-    override func mouseExited(with event: NSEvent) {
-        isHighlighted = false
-        updateColors()
     }
 }

@@ -31,7 +31,6 @@
 		B065D7E6AA438894B746EDED /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = F255B513AB9044F96DE8A16D /* Track.swift */; };
 		B40EF21AD43AA8E1DDE1A9F4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1FB0715591DFB29FBEC746 /* AppDelegate.swift */; };
 		B6AB4DDD3FCAB09545957D12 /* NotchPlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C238B4CEC383B8A3572459B4 /* NotchPlayerController.swift */; };
-		B859B95B1231A90992F14CB8 /* MarqueeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2543C4777EE6738F580CF03 /* MarqueeView.swift */; };
 		BFFC0F5D826BD8FFD9187782 /* LRCLIBProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CC394961F4F16BFF4F729B /* LRCLIBProvider.swift */; };
 		C150DAD99A317B1114199873 /* LyricsModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = D523793662476587CC0DA934 /* LyricsModels.swift */; };
 		C9384E5A0B4B50F205421864 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3475524FBA5C77F7304015 /* AppState.swift */; };
@@ -69,7 +68,6 @@
 		9DA8EBDB194B537116CB8C6E /* NotchPlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotchPlayerViewModel.swift; sourceTree = "<group>"; };
 		A1CC394961F4F16BFF4F729B /* LRCLIBProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LRCLIBProvider.swift; sourceTree = "<group>"; };
 		AC6C51F54484FE9D13E34369 /* MusicServiceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicServiceManager.swift; sourceTree = "<group>"; };
-		B2543C4777EE6738F580CF03 /* MarqueeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarqueeView.swift; sourceTree = "<group>"; };
 		B25B6DA27CA4E1669188448E /* MusicCompanion.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MusicCompanion.entitlements; sourceTree = "<group>"; };
 		B8F7EE33A437CB702FEAC511 /* MenuBarPopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarPopoverView.swift; sourceTree = "<group>"; };
 		C238B4CEC383B8A3572459B4 /* NotchPlayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotchPlayerController.swift; sourceTree = "<group>"; };
@@ -214,7 +212,6 @@
 		80CEC53ADB2B5AC5B0D8954A /* MenuBar */ = {
 			isa = PBXGroup;
 			children = (
-				B2543C4777EE6738F580CF03 /* MarqueeView.swift */,
 				34B3069D04099E0937D3A4BB /* MenuBarController.swift */,
 				B8F7EE33A437CB702FEAC511 /* MenuBarPopoverView.swift */,
 				75E4CE4F5356620248DFB068 /* MenuBarViewModel.swift */,
@@ -377,7 +374,6 @@
 				19F201E221A57BF4E4279719 /* LyricsView.swift in Sources */,
 				6DDEC8395EBE37A800103569 /* LyricsViewModel.swift in Sources */,
 				71CFCBA22AD5D1E955AA7D9B /* LyricsWindowController.swift in Sources */,
-				B859B95B1231A90992F14CB8 /* MarqueeView.swift in Sources */,
 				8FFA323DB023A9F6F81DE02A /* MenuBarController.swift in Sources */,
 				5FA5924C4642A353BB5A410C /* MenuBarPopoverView.swift in Sources */,
 				82A4C21CA563D3A5EDC71CCC /* MenuBarSettings.swift in Sources */,
